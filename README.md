@@ -17,7 +17,7 @@ Nothing more. No flexible configuration or customization.
 
 ## Example
 
-1. Write a test like
+1. Write a snapshot test like the following.
     ```java
     package com.example;
     
@@ -68,8 +68,11 @@ Nothing more. No flexible configuration or customization.
     update-snapshots=false
     ```
 
-4. Run the test. It will now assert that the JSON produced in the test matches the snapshot. :tada:
+4. Run the test. It will now assert that the JSON produced in the test matches the JSON from the snapshot file. :tada:
+
+<br/>
+<br/>
 
 > [!NOTE]
-> Ignored fields are included in the snapshot, just ignored for comparison.
-> If you update snapshots then the ignored fields will also be updated in the snapshots.
+> Ignored fields are included in the snapshot, just ignored for comparison. \
+> So if you update snapshots then the ignored fields will also be updated in the snapshots.
