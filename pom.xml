@@ -36,6 +36,12 @@
 
     <build>
         <plugins>
+            <!-- for running tests with maven -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.1</version>
+            </plugin>
             <!-- for code formatting only -->
             <plugin>
                 <groupId>com.hubspot.maven.plugins</groupId>
