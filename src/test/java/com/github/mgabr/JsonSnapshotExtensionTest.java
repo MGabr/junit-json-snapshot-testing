@@ -63,6 +63,9 @@ public class JsonSnapshotExtensionTest {
   private static final String JSON_WITH_DIFFERENT_STR_FIELD =
     "{\"strField\":\"w\",\"objField\":{\"intField\":1},\"arrField\":[{\"field1\": 1}, {\"field2\": 2}]}";
 
+  private static final String JSON_WITH_DIFFERENT_NESTED_ARR_FIELD =
+    "{\"strField\":\"v\",\"objField\":{\"intField\":1},\"arrField\":[{\"field1\": 1}, {\"field2\": 3}]}";
+
   private ExpectJsonSnapshot expectJsonSnapshot;
 
   @AfterEach
@@ -255,11 +258,11 @@ public class JsonSnapshotExtensionTest {
   }
 
   @Test
-  void testSucceedsWhenOnlyIgnoredFieldsOfSnapshotJsonAndActualJsonDontMatch()
+  void testSucceedsWhenDifferentStrFieldIgnoredAndRemainingJsonAndActualJsonMatch()
     throws IOException {
     Path snapshotFilePath = Path.of(
       TEST_SNAPSHOTS_DIRECTORY,
-      "testSucceedsWhenOnlyIgnoredFieldsOfSnapshotJsonAndActualJsonDontMatch.json"
+      "testSucceedsWhenDifferentStrFieldIgnoredAndRemainingJsonAndActualJsonMatch.json"
     );
     Files.createDirectories(snapshotFilePath.getParent());
     Files.writeString(
@@ -269,6 +272,23 @@ public class JsonSnapshotExtensionTest {
     );
 
     expectJsonSnapshot.withIgnoredFields("strField").toMatch(JSON);
+  }
+
+  @Test
+  void testSucceedsWhenDifferentNestedArrFieldIgnoredAndRemainingJsonAndActualJsonMatch()
+    throws IOException {
+    Path snapshotFilePath = Path.of(
+      TEST_SNAPSHOTS_DIRECTORY,
+      "testSucceedsWhenDifferentNestedArrFieldIgnoredAndRemainingJsonAndActualJsonMatch.json"
+    );
+    Files.createDirectories(snapshotFilePath.getParent());
+    Files.writeString(
+      snapshotFilePath,
+      JSON_WITH_DIFFERENT_NESTED_ARR_FIELD,
+      StandardOpenOption.CREATE_NEW
+    );
+
+    expectJsonSnapshot.withIgnoredFields("arrField[1].field2").toMatch(JSON);
   }
 
   @Test
