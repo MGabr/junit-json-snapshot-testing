@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,11 +36,17 @@ public class JsonSnapshotFile {
   }
 
   public void save(String actualJson) throws IOException, JSONException {
-    String prettyActualJson = new JSONObject(actualJson).toString(
-      JSON_INDENT_SPACES
-    );
+    String prettyActualJson = toPrettyJson(actualJson);
     Files.createDirectories(this.path.getParent());
     Files.writeString(this.path, prettyActualJson, StandardOpenOption.CREATE);
+  }
+
+  private static String toPrettyJson(String json) throws JSONException {
+    if (json.startsWith("[") && json.endsWith("]")) {
+      return new JSONArray(json).toString(JSON_INDENT_SPACES);
+    } else {
+      return new JSONObject(json).toString(JSON_INDENT_SPACES);
+    }
   }
 
   private static Path getSnapshotFilePath(

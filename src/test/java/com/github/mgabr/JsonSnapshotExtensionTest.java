@@ -37,6 +37,8 @@ public class JsonSnapshotExtensionTest {
 
   private static final String JSON_2 = "{\"strField\":\"v\"}";
 
+  private static final String JSON_ARRAY = "[{\"field1\": 1}, {\"field2\": 2}]";
+
   private static final String PRETTY_JSON =
     """
     {
@@ -59,6 +61,17 @@ public class JsonSnapshotExtensionTest {
     {
       "strField": "v"
     }""";
+
+  private static final String PRETTY_JSON_ARRAY =
+    """
+    [
+      {
+        "field1": 1
+      },
+      {
+        "field2": 2
+      }
+    ]""";
 
   private static final String JSON_WITH_DIFFERENT_STR_FIELD =
     "{\"strField\":\"w\",\"objField\":{\"intField\":1},\"arrField\":[{\"field1\": 1}, {\"field2\": 2}]}";
@@ -103,6 +116,23 @@ public class JsonSnapshotExtensionTest {
 
     String actualSavedJson = Files.readString(expectedSnapshotFilePath);
     assertEquals(PRETTY_JSON, actualSavedJson);
+  }
+
+  @Test
+  void testSavesSnapshotFileWhenNoSnapshotFileAndFixProfileAndJsonArray()
+    throws IOException {
+    JsonSnapshotProperties.setUpdateSnapshots(true);
+
+    expectJsonSnapshot.toMatch(JSON_ARRAY);
+
+    Path expectedSnapshotFilePath = Path.of(
+      TEST_SNAPSHOTS_DIRECTORY,
+      "testSavesSnapshotFileWhenNoSnapshotFileAndFixProfileAndJsonArray.json"
+    );
+    assertTrue(Files.exists(expectedSnapshotFilePath));
+
+    String actualSavedJson = Files.readString(expectedSnapshotFilePath);
+    assertEquals(PRETTY_JSON_ARRAY, actualSavedJson);
   }
 
   @Test
